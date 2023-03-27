@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Execute a command on a running container in EKS
+#
+# Usage:
+#   eks-connect {environment} {app-name} {command}
+#
+# Note:
+#   The environment can be specified so long as it partially matches the beginning of the word.
+#   For example, "int" matches "integration". So does "i".
+#
+# Example:
+#   eks-console integration whitehall-admin bash
+# Which is the same as:
+#   eks-console i whitehall-admin bash
+
+# Try to match $1 against a recognised environment
+VALID_ENVIRONMENTS=(integration staging production)
+for env in "${VALID_ENVIRONMENTS[@]}"; do
+   if [[ -n "$1" ]] && [[ $env == $1* ]]; then
+    ENVIRONMENT=$env
+   fi
+done
+
+if [[ -z "$ENVIRONMENT" ]]; then
+  echo "$1 is not a recognised environment"
+  echo "Expected one of: ${VALID_ENVIRONMENTS[@]}"
+  exit 1
+fi
+
+APP_NAME="$2"
+COMMAND="$3"
+
+echo "Connecting to $APP_NAME in $ENVIRONMENT"
+
+eval $(gds aws govuk-$ENVIRONMENT-poweruser -e --art 8h)
+aws eks update-kubeconfig --region eu-west-1 --name govuk --alias govuk-$ENVIRONMENT
+
+POD_NAME=$(kubectl -n apps get pods -l=app=$APP_NAME -o go-template --template '{{ (index .items 0).metadata.name }}')
+
+exec kubectl -n apps exec -it -c app $POD_NAME -- $COMMAND

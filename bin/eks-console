@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Open a Rails console
+#
+# Usage:
+#   eks-console {environment} {app-name}
+#
+# Example:
+#   eks-console integration whitehall-admin
+
+exec $(dirname -- "$0")/eks-connect $1 $2 "bundle exec rails console"

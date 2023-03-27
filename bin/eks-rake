@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Run a Rake task
+#
+# Usage:
+#   eks-rake {environment} {app-name} {rake-task}
+#
+# Example:
+#   eks-rake integration whitehall-admin db:migrate
+
+exec $(dirname -- "$0")/eks-connect $1 $2 "bundle exec rake $3"

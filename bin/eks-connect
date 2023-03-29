@@ -33,6 +33,6 @@ APP_NAME="$2"
 COMMAND="$3"
 
 echo "Connecting to $APP_NAME in $ENVIRONMENT"
-eval $(gds aws govuk-$ENVIRONMENT-poweruser -e --art 8h)
+eval $(gds aws govuk-$ENVIRONMENT-poweruser -e)
 aws eks update-kubeconfig --region eu-west-1 --name govuk --alias govuk-$ENVIRONMENT > /dev/null
 exec kubectl -n apps exec -it -c app deploy/$APP_NAME -- $COMMAND

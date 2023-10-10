@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Open a bash shell on the remote container
+#
+# Usage:
+#   eks-bash {environment} {app-name}
+#
+# Example:
+#   eks-bash integration whitehall-admin
+
+exec $(dirname -- "$0")/eks-connect $1 $2 "bash"

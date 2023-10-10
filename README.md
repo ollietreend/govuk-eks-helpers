@@ -77,13 +77,13 @@ $ eks-rake integration whitehall-admin -T
 </blockquote>
 </details>
 
-### Connect to a running container
+### Open a bash shell
 
 ```
-$ eks-connect {environment} {app-name} {command}
+$ eks-bash {environment} {app-name}
 ```
 
-Use this command if you want to open a `bash` shell to the container (effectively recreating an SSH experience), or run any other command on the container.
+Use this command to open a `bash` shell on the container (effectively recreating an SSH experience).
 
 <details>
 <summary><strong>Example</strong></summary>
@@ -92,7 +92,28 @@ Use this command if you want to open a `bash` shell to the container (effectivel
 Open a `bash` shell on Whitehall in integration:
 
 ```
-$ eks-connect integration whitehall-admin bash
+$ eks-bash integration whitehall-admin
+```
+
+</blockquote>
+</details>
+
+### Connect to a running container
+
+```
+$ eks-connect {environment} {app-name} {command}
+```
+
+Use this to run any other command on the container.
+
+<details>
+<summary><strong>Example</strong></summary>
+<blockquote>
+
+Run `ls` on Whitehall in integration:
+
+```
+$ eks-connect integration whitehall-admin ls
 ```
 
 Commands that contain spaces need to be wrapped in quote marks. For example:
